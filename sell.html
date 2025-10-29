@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Start Selling | Minimarket</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .sell-container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #088178;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #066e64;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #e7f9f4;
+      padding: 20px 30px;
+      border: 2px solid #088178;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #066e64;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Navigation -->
+  <section id="header">
+    <a href="#"><img src="img/defi.png" class="logo" alt="Logo"></a>
+    <div>
+      <ul id="navbar">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a class="active" href="sell.html">Sell</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Main Form Container -->
+  <div class="sell-container">
+    <h2>Post Your Product</h2>
+
+    <div id="login-warning" class="needs-login" style="display:none;">
+      You must be logged in to post a product. Please login below.
+    </div>
+
+    <div id="login-box" class="login-box" style="display:none;">
+      <!-- (Existing login/signup UI remains here unchanged) -->
+    </div>
+
+    <form id="sellForm">
+      <input type="hidden" name="user_email" id="userEmail" value="anonymous">
+
+      <label>Product Name *</label>
+      <input type="text" name="name" id="name" required>
+
+      <label>Category *</label>
+      <select name="category" id="category" required>
+        <option value="">Select...</option>
+        <option>Digital Appliances</option>
+        <option>Food & Snacks</option>
+        <option>Stationery</option>
+        <option>Accessories</option>
+        <option>Clothing</option>
+        <option>Merchandise</option>
+      </select>
+
+      <label>Price (₹) *</label>
+      <input type="number" name="price" id="price" min="0" step="0.01" required>
+
+      <label>Original Price (₹)</label>
+      <input type="number" name="original_price" id="original_price" min="0" step="0.01">
+
+      <label>Hashtags (comma separated)</label>
+      <input type="text" name="hashtags" id="hashtags" placeholder="#headphones, #digital">
+
+      <label>Product Description *</label>
+      <textarea name="description" id="description" rows="4" required></textarea>
+
+      <label>Upload Image *</label>
+      <input type="file" name="image" id="image" accept="image/*" required>
+
+      <button type="submit">Post Product</button>
+    </form>
+  </div>
+
+  <!-- Popup for Success Message -->
+  <div class="popup" id="popup">Product Saved and Posted!</div>
+
+  <script type="module">
+    import { auth, onAuthStateChanged } from "./auth.js";
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        document.getElementById("userEmail").value = user.email;
+      }
+    });
+
+    const form = document.getElementById("sellForm");
+    const popup = document.getElementById("popup");
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById("image");
+      if (!fileInput.files.length) {
+        return alert("Please upload an image.");
+      }
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64Image = reader.result;
+
+        const data = {
+          name: document.getElementById("name").value,
+          category: document.getElementById("category").value,
+          price: document.getElementById("price").value,
+          original_price: document.getElementById("original_price").value,
+          hashtags: document.getElementById("hashtags").value,
+          description: document.getElementById("description").value,
+          image: base64Image,
+          user_email: document.getElementById("userEmail").value
+        };
+
+        try {
+          const res = await fetch("https://sheetdb.io/api/v1/3nhf5tenmnkb5", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data })
+          });
+
+          if (res.ok) {
+            popup.style.display = "block";
+            setTimeout(() => {
+              popup.style.display = "none";
+              form.reset();
+            }, 3000);
+          } else {
+            alert("Something went wrong!");
+          }
+        } catch (err) {
+          alert("Error posting product.");
+        }
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    });
+  </script>
+
+</body>
+</html>

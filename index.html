@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimarket</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section id="header">
+        <a href="#"><img src="img/defi.png" class="logo" alt=""></a>
+        <div>
+        <ul id="navbar">
+            <li><a class="active" href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li id="lg-bag"><a href="cart.html"><i class="far fa-shopping-bag"></i></a></li>
+            <a href="#" id="close"><i class="far fa-times"></i></a>
+            <li><a href="profile.html"><i class="far fa-user-circle"></i></a></li>
+    <a href="#" id="close"><i class="far fa-times"></i></a>
+        </ul>
+    </div>
+    <div id="mobile">
+        <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+        <i id = "bar" class="fas fa-outdent"></i>
+    </div>
+    </section>
+
+    <section id="hero">
+        <h4></h4>
+        <h2>E-CommerceMini Site</h2>
+        <h3>Start Small, Dream Big</h3>
+        <p>Supports small-scale selling and teaches e-commerce foundations to beginners.</p>
+
+        <div>
+            <button onclick="openModal('loginModal')">Login</button>
+        <button onclick="openModal('signupModal')">Sign Up</button>
+
+        </div>
+
+        
+
+        
+    </section>
+
+    <section id="feature" class="section-p1">
+        <div class="fe-box">
+            <img src="img/features/f1.png" alt="">
+            <h6>Privacy & Security</h6>
+        </div>
+        <div class="fe-box">
+            <img src="img/features/f2.png" alt="">
+            <h6>Save Money</h6>
+        </div>
+        <div class="fe-box">
+            <img src="img/features/f3.png" alt="">
+            <h6>24/7 Support</h6>
+        </div>
+        <div class="fe-box">
+            <img src="img/features/f4.png" alt="">
+            <h6>Regular Updates</h6>
+        </div>
+        <div class="fe-box">
+            <img src="img/features/f5.png" alt="">
+            <h6>Offers & Discounts</h6>
+        </div>
+        <div class="fe-box">
+            <img src="img/features/f6.png" alt="">
+            <h6>Learn by Selling</h6>
+        </div>
+       
+
+    </section>
+
+    
+
+    <section id="banner">
+  <h3>Want to Make Money?</h3>
+  <h5>Start Selling with Us Today</h5>
+  <p>Post your product, get it featured on our store, and start earning right away.</p>
+  <a href="sell.html" class="hero-btn">Start Selling</a>
+</section>
+
+
+
+    <section id="product1" class="section-p1">
+        <h2>Coupons & discounts</h2>
+        <p>Special discounts from Defi Guru Market</p>
+        <div class="pro-container">
+            <div class="pro">
+  <img src="img/coupon/dis.png" alt="">
+  <div class="des">
+    <span><img src="img/coupon/off.png"></span>
+    <h5>Use code: <span class="code">SAVE100</span></h5>
+    <h4>On orders above Rs.999 | Up to Rs.100 </h4>
+    <button class="copy-code" onclick="copyCode(this)">Copy Code</button>
+  </div>
+</div>
+<div class="pro">
+  <img src="img/coupon/dis.png" alt="">
+  <div class="des">
+    <span><img src="img/coupon/offFive.png"></span>
+    <h5>Use code: <span class="code">SAVE50</span></h5>
+    <h4> On the first purchase | Up to Rs.50 </h4>
+    <button class="copy-code" onclick="copyCode(this)">Copy Code</button>
+  </div>
+</div>
+<div class="pro">
+  <img src="img/coupon/dis.png" alt="">
+  <div class="des">
+    <span><img src="img/coupon/offFive.png"></span>
+    <h5>Use code: <span class="code">STUDENT50</span></h5>
+    <h4>off for students | Up to Rs.50 </h4>
+    <button class="copy-code" onclick="copyCode(this)">Copy Code</button>
+  </div>
+</div>
+        </div>
+   </section>
+
+   <section id="newsletter" class="section-p1 section-m1">
+    <div class="newstext">
+        <h4>Sign up For Newsletters</h4>
+        <p>Get E-mail updates about our latest shop and <span>special offers</span> and important Notifications!</p>
+    </div>
+    <div class="form">
+        <input types="text" placeholder="Your email address">
+        <button class="normal">Sign Up</button>
+
+    </div>
+
+
+   </section>
+
+   <footer class="section-p1">
+    <div class="col">
+        <img class="logo" src="img/defi.png" alt="">
+        <h4>Contact</h4>
+        <p><strong>Addres: </strong> Boring Road | Road no. 4 | Patna </p>
+        <p><strong>Hours: </strong> 10:00 - 18:00 | Monday - Saturday</p>
+        <div class="follow">
+            <h4>Follow Us</h4>
+            <div class="icon">
+                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-pinterest-p"></i>
+                <i class="fab fa-youtube"></i>
+                <i class="fab fa-telegram"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <h4>About</h4>
+        <a href="#">About us</a>
+        <a href="#">Delivery Information</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
+    </div>
+
+    <div class="col">
+        <h4>My Account</h4>
+        <a href="#">Sign In</a>
+        <a href="#">View Cart</a>
+        <a href="#">My Wishlist</a>
+        <a href="#">Track my Order</a>
+        <a href="#">Help</a>
+    </div>
+
+    <div class="col install">
+        <h4>Install App</h4>
+        <p>From App Store or Google Play</p>
+        <div class="row">
+            <img src="img/pay/app.png" alt="">
+            <img src="img/pay/play.png" alt="">
+        </div>
+        <p>Secure Payment Gateways</p>
+        <img src="img/pay/pay.png" alt="">
+    </div>
+
+    <div class="copyright">
+        <p>© 2025 | PARTH - HTML CSS Website</p>
+    </div>
+   </footer>
+
+
+    <script src="script.js"></script>
+
+
+    <!-- LOGIN MODAL -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+    <h2>Login</h2>
+    <form id="popup-login-form">
+      <input type="email" id="popup-login-email" placeholder="Email" required />
+      <input type="password" id="popup-login-password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a href="#" onclick="switchToSignup()">Sign up</a></p>
+  </div>
+</div>
+
+<!-- SIGNUP MODAL -->
+<div id="signupModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('signupModal')">&times;</span>
+    <h2>Sign Up</h2>
+    <form id="popup-signup-form">
+      <input type="email" id="popup-signup-email" placeholder="Email" required />
+      <input type="password" id="popup-signup-password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="#" onclick="switchToLogin()">Login</a></p>
+  </div>
+</div>
+
+</body>
+
+</html>

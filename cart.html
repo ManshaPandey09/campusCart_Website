@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimarket</title>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section id="header">
+  <a href="#"><img src="img/defi.png" class="logo" alt=""></a>
+  <div>
+    <ul id="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li id="lg-bag"><a class="active" href="cart.html"><i class="far fa-shopping-bag"></i></a></li>
+      <a href="#" id="close"><i class="far fa-times"></i></a>
+    </ul>
+  </div>
+  <div id="mobile">
+    <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+    <i id="bar" class="fas fa-outdent"></i>
+  </div>
+</section>
+
+<section id="page-header" class="blog-header">
+  <h2>#Your_Cart</h2>
+  <p>Ready to Experience!</p>
+</section>
+
+<section id="cart" class="section-p1">
+  <table width="100%">
+    <thead>
+      <tr>
+        <td>Remove</td>
+        <td>Image</td>
+        <td>Product</td>
+        <td>Price</td>
+        <td>Quantity</td>
+        <td>Subtotal</td>
+      </tr>
+    </thead>
+    <tbody id="cart-table-body"></tbody>
+  </table>
+</section>
+
+<section id="cart-add" class="section-p1">
+  <div id="coupon">
+    <h3>Apply Coupon</h3>
+    <div>
+      <input type="text" id="coupon-code" placeholder="Enter Your Coupon">
+      <button class="normal" onclick="applyCoupon()">Apply</button>
+      <p id="coupon-message" style="margin-top: 10px; font-weight: bold;"></p>
+    </div>
+  </div>
+
+  <div id="subtotal">
+    <h3>Cart Totals</h3>
+    <table>
+      <tr>
+        <td>Cart Subtotal</td>
+        <td id="cart-subtotal">Rs. 0</td>
+      </tr>
+      <tr>
+        <td>Shipping</td>
+        <td>Free</td>
+      </tr>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td><strong id="cart-total">Rs. 0</strong></td>
+      </tr>
+    </table>
+    <button class="normal" onclick="proceedToBuy()">Proceed to Buy</button>
+  </div>
+</section>
+
+<footer class="section-p1">
+  <div class="col">
+    <img class="logo" src="img/defi.png" alt="">
+    <h4>Contact</h4>
+    <p><strong>Address: </strong> Boring Road | Road no. 4 | Patna</p>
+    <p><strong>Hours: </strong> 10:00 - 18:00 | Monday - Saturday</p>
+    <div class="follow">
+      <h4>Follow Us</h4>
+      <div class="icon">
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-pinterest-p"></i>
+        <i class="fab fa-youtube"></i>
+        <i class="fab fa-telegram"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <h4>About</h4>
+    <a href="#">About us</a>
+    <a href="#">Delivery Information</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms & Conditions</a>
+    <a href="#">Contact Us</a>
+  </div>
+
+  <div class="col">
+    <h4>My Account</h4>
+    <a href="#">Sign In</a>
+    <a href="#">View Cart</a>
+    <a href="#">My Wishlist</a>
+    <a href="#">Track my Order</a>
+    <a href="#">Help</a>
+  </div>
+
+  <div class="col install">
+    <h4>Install App</h4>
+    <p>From App Store or Google Play</p>
+    <div class="row">
+      <img src="img/pay/app.png" alt="">
+      <img src="img/pay/play.png" alt="">
+    </div>
+    <p>Secure Payment Gateways</p>
+    <img src="img/pay/pay.png" alt="">
+  </div>
+
+  <div class="copyright">
+    <p>© 2025 | PARTH - HTML CSS Website</p>
+  </div>
+</footer>
+
+<script>
+const validCoupons = {
+  SAVE10: { discount: 10, min: 0 },
+  SAVE100: { discount: 100, min: 999 },
+  SAVE50: { discount: 50, min: 0 },
+  STUDENT50: { discount: 50, min: 0 }
+};
+
+let appliedCoupon = null;
+
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart')) || [];
+}
+
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function renderCart() {
+  const cart = getCart();
+  const tbody = document.getElementById('cart-table-body');
+  tbody.innerHTML = '';
+
+  let subtotal = 0;
+
+  cart.forEach((item, index) => {
+    const itemSubtotal = item.price * item.quantity;
+    subtotal += itemSubtotal;
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><a href="#" onclick="removeItem(${index})"><i class="far fa-times-circle"></i></a></td>
+      <td><img src="${item.image}" alt=""></td>
+      <td>${item.name}</td>
+      <td>Rs. ${item.price}</td>
+      <td><input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)"></td>
+      <td>Rs. ${itemSubtotal}</td>
+    `;
+    tbody.appendChild(row);
+  });
+
+  document.getElementById('cart-subtotal').innerText = `Rs. ${subtotal}`;
+  let total = subtotal;
+
+  if (appliedCoupon) {
+    const coupon = validCoupons[appliedCoupon];
+    if (subtotal >= coupon.min) {
+      total = Math.max(0, subtotal - coupon.discount);
+      document.getElementById('coupon-message').innerText = `Coupon '${appliedCoupon}' applied - Rs. ${coupon.discount} off!`;
+    } else {
+      document.getElementById('coupon-message').innerText = `Cart total must be at least Rs. ${coupon.min} to use '${appliedCoupon}'.`;
+    }
+  }
+
+  document.getElementById('cart-total').innerText = `Rs. ${total}`;
+}
+
+function removeItem(index) {
+  const cart = getCart();
+  cart.splice(index, 1);
+  saveCart(cart);
+  renderCart();
+}
+
+function updateQuantity(index, quantity) {
+  const cart = getCart();
+  cart[index].quantity = parseInt(quantity);
+  saveCart(cart);
+  renderCart();
+}
+
+function applyCoupon() {
+  const code = document.getElementById('coupon-code').value.trim();
+  if (validCoupons[code]) {
+    appliedCoupon = code;
+    renderCart();
+  } else {
+    document.getElementById('coupon-message').innerText = 'Invalid coupon code';
+  }
+}
+
+function copyCode(el) {
+  const code = el.parentNode.querySelector(".code").textContent;
+  navigator.clipboard.writeText(code);
+  el.textContent = "Copied!";
+  setTimeout(() => (el.textContent = "Copy Code"), 1000);
+}
+
+async function proceedToBuy() {
+  const cart = getCart();
+  if (cart.length === 0) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  let subtotal = 0;
+  cart.forEach(item => {
+    subtotal += item.price * item.quantity;
+  });
+
+  let total = subtotal;
+  if (appliedCoupon) {
+    const coupon = validCoupons[appliedCoupon];
+    if (subtotal >= coupon.min) {
+      total = Math.max(0, subtotal - coupon.discount);
+    }
+  }
+
+  // Send order to backend
+  const mysqlItems = cart.filter(item => item.id.startsWith('mysql_')).map(item => ({
+    productId: parseInt(item.id.replace('mysql_', '')),
+    quantity: item.quantity
+  }));
+
+  if (mysqlItems.length > 0) {
+    try {
+      const resp = await fetch('/api/place-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: mysqlItems, total })
+      });
+      if (!resp.ok) throw new Error('Order placement failed');
+      const result = await resp.json();
+      if (result.success) {
+        localStorage.removeItem('cart'); // Clear cart on successful order
+        alert('Order placed successfully! Products marked as Sold Out.');
+      } else {
+        alert('Order placement failed: ' + result.message);
+      }
+    } catch (e) {
+      console.error('Order error:', e);
+      alert('Failed to place order. Please try again.');
+    }
+  }
+
+  localStorage.setItem("latestOrderTotal", total);
+  window.open("https://t.me/YourBotUsername", "_blank");
+  alert("We've opened Telegram. Send /start to proceed with payment.");
+}
+
+renderCart();
+</script>
+</body>
+</html>

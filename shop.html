@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minimarket</title>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Header -->
+<section id="header">
+  <a href="#"><img src="img/defi.png" class="logo" alt=""></a>
+  <div>
+    <ul id="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a class="active" href="shop.html">Shop</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li id="lg-bag"><a href="cart.html"><i class="far fa-shopping-bag"></i></a></li>
+      <a href="#" id="close"><i class="far fa-times"></i></a>
+    </ul>
+  </div>
+  <div id="mobile">
+    <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+    <i id="bar" class="fas fa-outdent"></i>
+  </div>
+</section>
+
+<!-- Page Header -->
+<section id="page-header">
+  <h2>#BoostYourPresence</h2>
+  <p>Save more with coupons & up to 70% off!</p>
+</section>
+
+<!-- Search Bar -->
+<section id="search-bar" style="text-align: center; padding: 20px;">
+  <input type="text" id="searchInput" placeholder="Search product (e.g., Prime Video)" style="padding: 10px; width: 60%; max-width: 400px;">
+  <button onclick="searchProduct()" style="padding: 10px 20px;">Search</button>
+  <p id="searchMessage" style="color: crimson; font-weight: bold; margin-top: 10px; transition: opacity 0.3s;"></p>
+</section>
+
+<!-- Product Listing -->
+<section id="product1" class="section-p1">
+  <div class="pro-container" id="product-list"></div>
+</section>
+
+<!-- Pagination -->
+<section id="pagination" class="section-p1">
+  <a href="#">1</a>
+  <a href="#">2</a>
+  <a href="#"><i class="fal fa-long-arrow-alt-right"></i></a>
+</section>
+
+<!-- Newsletter -->
+<section id="newsletter" class="section-p1 section-m1">
+  <div class="newstext">
+    <h4>Sign up For Newsletters</h4>
+    <p>Get E-mail updates about our latest shop and <span>special offers</span> and important Notifications!</p>
+  </div>
+  <div class="form">
+    <input type="text" placeholder="Your email address">
+    <button class="normal">Sign Up</button>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="section-p1">
+  <div class="col">
+    <img class="logo" src="img/defi.png" alt="">
+    <h4>Contact</h4>
+    <p><strong>Address:</strong> Boring Road | Road no. 4 | Patna</p>
+    <p><strong>Hours:</strong> 10:00 - 18:00 | Monday - Saturday</p>
+    <div class="follow">
+      <h4>Follow Us</h4>
+      <div class="icon">
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-twitter"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-pinterest-p"></i>
+        <i class="fab fa-youtube"></i>
+        <i class="fab fa-telegram"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <h4>About</h4>
+    <a href="#">About us</a>
+    <a href="#">Delivery Information</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms & Conditions</a>
+    <a href="#">Contact Us</a>
+  </div>
+
+  <div class="col">
+    <h4>My Account</h4>
+    <a href="#">Sign In</a>
+    <a href="#">View Cart</a>
+    <a href="#">My Wishlist</a>
+    <a href="#">Track my Order</a>
+    <a href="#">Help</a>
+  </div>
+
+  <div class="col install">
+    <h4>Install App</h4>
+    <p>From App Store or Google Play</p>
+    <div class="row">
+      <img src="img/pay/app.png" alt="">
+      <img src="img/pay/play.png" alt="">
+    </div>
+    <p>Secure Payment Gateways</p>
+    <img src="img/pay/pay.png" alt="">
+  </div>
+
+  <div class="copyright">
+    <p>© 2025 | PARTH - HTML CSS Website</p>
+  </div>
+</footer>
+
+<script>
+const API_MAIN = "https://sheetdb.io/api/v1/oyfbwin1f16yb";
+const API_STUDENTS = "https://sheetdb.io/api/v1/3nhf5tenmnkb5";
+let products = [];
+
+async function fetchProducts() {
+  try {
+    const [r1, r2] = await Promise.all([fetch(API_MAIN), fetch(API_STUDENTS)]);
+    const [a1, a2] = await Promise.all([r1.json(), r2.json()]);
+    products = [...a1, ...a2];
+  } catch (err) {
+    console.error("Error loading products:", err);
+  }
+}
+
+function renderProducts(query = '') {
+  const container = document.getElementById('product-list');
+  container.innerHTML = '';
+  const matched = products.filter(p => {
+    const name = (p.name || '').toLowerCase();
+    const tags = (p.hashtags || '').toLowerCase();
+    return !query || name.includes(query) || tags.includes(query);
+  });
+  if (!matched.length) {
+    container.innerHTML = '<p>No products found.</p>';
+  } else {
+    matched.forEach(p => {
+      const original = Number(p.original_price || p.variant1_original || 0);
+      const sale = Number(p.price || p.variant1_price || 0);
+      const discount = original && sale ? Math.round(((original - sale) / original) * 100) : 0;
+
+      container.innerHTML += `
+      <div class="pro">
+        <img src="${p.image}" alt="${p.name}">
+        <div class="des">
+          <span>${p.category || ''}</span>
+          <h5>${p.name}</h5>
+          <div>${'<i class="fas fa-star"></i>'.repeat(5)}</div>
+          <h4>₹${sale}${discount ? ` (${discount}% Off)` : ''}</h4>
+          <div class="des2">${original && sale < original ? `<span>₹${original}</span>` : ''}</div>
+        </div>
+      </div>`;
+    });
+  }
+}
+
+function searchProduct() {
+  const term = document.getElementById('searchInput').value.toLowerCase();
+  renderProducts(term);
+}
+
+window.onload = async () => {
+  await fetchProducts();
+  renderProducts();
+};
+</script>
+
+<script src="script.js"></script>
+<script src="sproduct-script.js"></script>
+</body>
+</html>
